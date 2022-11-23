@@ -44,7 +44,9 @@ export default function GaugeChart() {
   return (
     <div>
       <GaugeChartPage data={data} />
-      <button onClick={() => setShouldClassify(!shouldClassify)}>start</button>
+      <button onClick={() => setShouldClassify(!shouldClassify)}>
+        {shouldClassify ? "기록중" : "정지중"}
+      </button>
       <video
         ref={videoRef}
         style={{ transform: "scale(-1,1)" }}
