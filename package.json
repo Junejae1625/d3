@@ -12,11 +12,14 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "d3": "^7.6.1",
+    "ml5": "^0.12.2",
     "next": "13.0.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "typescript": "^4.9.3"
   },
   "devDependencies": {
+    "@types/react": "18.0.25",
     "eslint": "^8.27.0",
     "eslint-config-next": "13.0.3",
     "eslint-config-prettier": "^8.5.0",
@@ -25,6 +28,7 @@
     "eslint-plugin-n": "^15.5.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.31.10",
-    "prettier": "2.7.1"
+    "prettier": "2.7.1",
+    "resize-observer-polyfill": "^1.5.1"
   }
 }
