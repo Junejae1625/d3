@@ -1,28 +1,32 @@
 import { useEffect, useRef, useState } from "react";
 import GaugeChartPage from "../../src/components/gaugeChart";
-// import { ml5 } from "ml5";
+// import ml5 from "ml5";
 import useInterval from "../../src/hooks/useInterval";
 
+let classifier;
 export default function GaugeChart() {
   const videoRef = useRef(null);
   const [data, setData] = useState([0.5, 0.5]);
   const [shouldClassify, setShouldClassify] = useState(false);
-  let classifier;
   useEffect(() => {
-    const ml5 = require("ml5");
-    classifier = ml5.imageClassifier("/machine-model/metadata.json", () => {
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: false })
-        .then((stream) => {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
-        });
-    });
-    console.log(classifier);
+    const qqq = async () => {
+      const ml5 = await import("ml5");
+      classifier = ml5.imageClassifier("/machine-model/model.json", () => {
+        navigator.mediaDevices
+          .getUserMedia({ video: true, audio: false })
+          .then((stream) => {
+            videoRef.current.srcObject = stream;
+            videoRef.current.play();
+          });
+      });
+    };
+    qqq();
   }, []);
   useEffect(() => {
-    console.log(classifier);
+    if (!shouldClassify) return;
     setInterval(() => {
+      console.log(classifier);
+      console.log(shouldClassify);
       if (classifier && shouldClassify) {
         classifier.classify(videoRef.current, (error, results) => {
           if (error) {
@@ -30,11 +34,12 @@ export default function GaugeChart() {
             return;
           }
           results.sort((a, b) => b.label.localeCompare(a.label));
-          setData(results.map((el) => el.confidnece));
+          console.log(results);
+          setData(results.map((el) => el.confidence));
         });
       }
     }, 500);
-  }, []);
+  }, [shouldClassify]);
 
   return (
     <div>

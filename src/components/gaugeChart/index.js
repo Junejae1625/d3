@@ -28,6 +28,8 @@ export default function GaugeChartPage({ data }) {
       .attr("d", (instructions) => arcGenerator(instructions));
   }, [data, dimensions]);
 
+  console.log(data);
+
   return (
     <div
       style={{
@@ -43,7 +45,7 @@ export default function GaugeChartPage({ data }) {
     >
       <h1>인공지능 신기해</h1>
       <small>
-        [{data[0].toFixed(2)}, {data[1].toFixed(2)}]
+        [{data[0]?.toFixed(2)}, {data[1]?.toFixed(2)}]
       </small>
       <div ref={divRef}>
         <svg ref={svgRef} style={{ overflow: "visible", width: "100%" }}></svg>
