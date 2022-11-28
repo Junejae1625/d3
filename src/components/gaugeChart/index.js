@@ -11,7 +11,11 @@ export default function GaugeChartPage({ data }) {
 
     const arcGenerator = d3.arc().innerRadius(75).outerRadius(150);
 
-    const pieGenerator = d3.pie();
+    const pieGenerator = d3
+      .pie()
+      .startAngle(-0.5 * Math.PI)
+      .endAngle(0.5 * Math.PI)
+      .sort(null);
     const instructions = pieGenerator(data);
 
     svg
@@ -20,12 +24,24 @@ export default function GaugeChartPage({ data }) {
       .join("path")
       .attr("class", "slice")
       .attr("stroke", "black")
-      .attr("fill", "none")
+      .attr("fill", (instructions, index) => (index === 0 ? "#ffcc00" : "#eee"))
       .style(
         "transform",
         `translate(${dimensions.width / 2}px, ${dimensions.height}px)`
       )
-      .attr("d", (instructions) => arcGenerator(instructions));
+      .transition()
+      .attrTween("d", function (nextInstruction) {
+        const interpolator = d3.interpolate(
+          this.lastInstruction,
+          nextInstruction
+        );
+        this.lastInstruction = interpolator(1);
+        interpolator(0.5);
+        return function (t) {
+          return arcGenerator(interpolator(t));
+        };
+      });
+    // .attr("d", (instructions) => arcGenerator(instructions));
   }, [data, dimensions]);
 
   console.log(data);
